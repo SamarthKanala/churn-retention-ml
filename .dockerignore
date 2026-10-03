@@ -1,0 +1,7 @@
+venv/
+data/
+mlruns/
+notebooks/
+reports/
+__pycache__/
+.git/
