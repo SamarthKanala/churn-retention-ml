@@ -4,3 +4,7 @@ mlruns/
 __pycache__/
 .ipynb_checkpoints/
 *.pkl
+mlflow.db
+models/logistic_regression.joblib
+models/random_forest.joblib
+models/xgboost.joblib
