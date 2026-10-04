@@ -28,7 +28,8 @@ jobs:
           docker run -d -p 8000:8000 --name api churn-api
           sleep 10
           curl --fail http://localhost:8000/health
-    deploy:
+
+  deploy:
     needs: [test, docker]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
