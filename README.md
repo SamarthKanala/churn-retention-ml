@@ -90,3 +90,13 @@ The default 0.5 cut-off is not necessarily the best business choice. I tuned the
 Under these assumptions the tuned threshold gives about 3% higher net benefit on the held-out test set. The best threshold is highly sensitive to the offer cost (0.25 at a cost of 250, 0.41 at 500, 0.61 at 1,000, 0.86 at 2,000), so real campaign costs and customer values would be needed before using it in production. The chosen threshold is saved in `models/threshold.json`; the deployed API still uses the default 0.5.
 
 ![Net benefit vs threshold](reports/threshold_profit.png)
+
+## Drift monitoring
+`src/drift.py` compares incoming data with the training data using the Population Stability Index (PSI) per feature, a Kolmogorov-Smirnov test for continuous features, and PSI on the model's predicted scores. Rule of thumb: PSI below 0.10 is stable, 0.10-0.25 moderate, above 0.25 significant.
+
+| Batch | Result |
+|---|---|
+| Real held-out test data | All PSI below 0.01, so no drift |
+| **Simulated** drift (customers 8 years older, balances 30% higher, 30% of active members turned inactive) | Alerts on Age (0.86), AgeGroup (0.75), Balance (0.59) and predicted score (0.27) |
+
+The drifted batch is synthetic. It shows that the monitor detects shifts, not that the deployed model has drifted. The check runs on demand and is not scheduled or tied to automated retraining.
