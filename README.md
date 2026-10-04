@@ -71,3 +71,9 @@ Docker: `docker build -t churn-api . && docker run -p 8000:8000 churn-api`
 
 ## Tech stack
 Python, PySpark, pandas, scikit-learn, XGBoost, SHAP, MLflow, FastAPI, pytest, Docker, GitHub Actions
+
+   ## Deployment
+   The API is containerised and deployed on Google Cloud Run (asia-south1).
+   Live docs: <your service URL>/docs
+
+   ![Cloud Run prediction](docs/cloud_run_predict.png)
