@@ -77,3 +77,16 @@ Python, PySpark, pandas, scikit-learn, XGBoost, SHAP, MLflow, FastAPI, pytest, D
    Live docs: <your service URL>/docs
 
    ![Cloud Run prediction](docs/cloud_run_predict.png)
+
+   ## Decision threshold
+The default 0.5 cut-off is not necessarily the best business choice. I tuned the threshold with a cost/benefit analysis on out-of-fold training predictions (so the test set did not influence the choice), using illustrative assumptions: customer value 10,000, offer cost 500, and a 30% save rate among contacted churners.
+
+| | Default 0.50 | Tuned 0.41 |
+|---|---|---|
+| Customers flagged | 28.4% | 35.0% |
+| Recall | 0.732 | 0.803 |
+| Precision | 0.524 | 0.466 |
+
+Under these assumptions the tuned threshold gives about 3% higher net benefit on the held-out test set. The best threshold is highly sensitive to the offer cost (0.25 at a cost of 250, 0.41 at 500, 0.61 at 1,000, 0.86 at 2,000), so real campaign costs and customer values would be needed before using it in production. The chosen threshold is saved in `models/threshold.json`; the deployed API still uses the default 0.5.
+
+![Net benefit vs threshold](reports/threshold_profit.png)
