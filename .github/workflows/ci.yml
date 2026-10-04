@@ -28,3 +28,18 @@ jobs:
           docker run -d -p 8000:8000 --name api churn-api
           sleep 10
           curl --fail http://localhost:8000/health
+    deploy:
+    needs: [test, docker]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: churn-api
+          region: asia-south1
+          source: .
+          flags: --allow-unauthenticated --port=8000 --memory=1Gi --max-instances=2
