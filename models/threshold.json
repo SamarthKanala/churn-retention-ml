@@ -1,0 +1,8 @@
+{
+  "threshold": 0.41,
+  "assumptions": {
+    "value_retained": 10000,
+    "offer_cost": 500,
+    "save_rate": 0.3
+  }
+}
